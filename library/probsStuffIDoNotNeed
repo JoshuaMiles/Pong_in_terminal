@@ -1,0 +1,66 @@
+    switch (level){
+        // wall ball
+        case 1 :
+
+            break;
+                //robopong
+        case 2 :
+
+
+
+//            sprite_draw(left_paddle);
+
+            break;
+                //Singularity
+        case 3 :
+
+            gravity_maker_x =  (w-1)/2;
+
+            gravity_maker_y = (h-1)/2;
+
+            gravity_maker = sprite_create( gravity_maker_x-2 , gravity_maker_y-2, 5, 5, gravity_maker_image );
+
+            // Draw the gravity thingy.
+            sprite_draw(gravity_maker);
+            break;
+                // rails
+        case 4 :
+            break;
+        default :
+            printf("Not a valid level");
+    }
+
+
+
+        // if ( key == 'w' && sprite_y(a_box) > 3 ) {
+        //     sprite_move( a_box, 0, -1);
+        // }
+
+        // Move right paddle down according to specification.
+        // else if ( key  == 's' &&  sprite_y(a_box) < h - 4 - 1) {
+        //     sprite_move( a_box, 0, +1);
+        // }
+
+        // if ( key == 'a' && sprite_x(a_box) > 1 ) {
+        //     sprite_move(a_box, -1, 0);
+        // }
+
+        // Move right paddle down according to specification.
+        // else if ( key  == 'd' ) {
+        //     sprite_move(a_box, +1, 0);
+        // }
+
+
+        //
+        //            if(sprite_y(left_paddle) > 3 && sprite_y(left_paddle)+paddle_height < h - 2) {
+        //               sprite_move_to(left_paddle, 3, ball_y - 3);
+        //            } else {
+        //                sprite_move(left_paddle,0,+1);
+        //            }
+
+        //            else if(sprite_y(left_paddle) > 3) {
+        //                sprite_move_to(left_paddle, left_paddle_x, paddle_height + 4);
+        //            } else if (sprite_y(left_paddle) + paddle_height < h - 3) {
+        //                sprite_move_to(left_paddle, left_paddle_x, h - paddle_height - 2);
+        //            }
+
