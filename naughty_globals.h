@@ -72,7 +72,7 @@ int     paddle_width = 1,
         delay = 15,
         lives = 1,
         score = 0,
-        level = 3,
+        level = 4,
 
         timer_mins = 0,
         timer_seconds = 0,
@@ -82,7 +82,10 @@ int     paddle_width = 1,
         key,
         paused = 0,
         temp_seconds = 0,
-        temp_minutes = 0;
+        temp_minutes = 0,
+        seconds,
+        time_left,
+        start_time;
 
 unsigned int now;
 double dx, dy;
