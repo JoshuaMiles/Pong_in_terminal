@@ -1,93 +1,5 @@
-#include <math.h>
-#include <stdlib.h>
-#include <string.h>
-#include "library/cab202_sprites.h"
-#include "library/cab202_timers.h"
-#include "library/cab202_graphics.h"
-#include "naughty_globals.h"
+#include "main.h"
 
-void create_sprites(int right_paddle_x, int right_paddle_y, int left_paddle_x);
-
-bool sprite_collision(sprite_id sprite_1, sprite_id sprite_2);
-
-void set_ball_speed(float mid_width, float mid_height, double speed_modifier);
-
-void ball_set(float mid_width, float mid_height, double speed_modifier);
-
-void wall_bounce_handler(int ball_r, int ball_y, int ball_b, int ball_x);
-
-void draw_border(int left, int top, int right, int bottom);
-
-void hud_functionality(int key, int width, int height);
-
-void game_over_screen();
-
-void reset_game();
-
-void handle_right_paddle(int height, int key, int right_paddle_top);
-
-void handle_left_paddle(int ball_y);
-
-void wait_than_play();
-
-void the_time();
-
-void top_board();
-
-void draw_gravity_maker();
-
-void setup_for_acceleration(void);
-
-void accelerate_ball_around_gravity_maker();
-
-void setup(void);
-
-void process(void);
-
-void handle_game();
-
-void rails_handler(int array[adjusted_screen_width][adjusted_screen_height]);
-
-
-void rails_handler(int array[adjusted_screen_width][adjusted_screen_height]) {
-
-
-    int rail_width_left = (int) round(adjusted_screen_width * 0.25);
-    int rail_width_right = (int) round(adjusted_screen_width * 0.75);
-    int rail_height_top = (int) round(adjusted_screen_height * 0.333333);
-    int rail_height_bottom = (int) round(adjusted_screen_height * 0.66666);
-
-    if (trig_bool) {
-        for (int i = 0; i < adjusted_screen_width; ++i) {
-            for (int j = 0; j < adjusted_screen_height; ++j) {
-                if ((i > rail_width_left && (i < rail_width_right)) &&
-                    ((j == rail_height_bottom) || (j == rail_height_top))) {
-                    draw_formatted(i, j, "=");
-                    array[i][j] = 1;
-                }
-            }
-        }
-    }
-    trig_bool = false;
-
-    for (int i = 0; i < adjusted_screen_width; ++i) {
-        for (int j = 0; j < adjusted_screen_height; ++j) {
-            if ((i > rail_width_left && (i < rail_width_right)) &&
-                ((j == rail_height_bottom) || (j == rail_height_top)) && (array[i][j] == 1)) {
-
-                draw_formatted(i, j, "=");
-                array[i][j] = 1;
-                if (round(sprite_x(ball)) == i &&
-                    round(sprite_y(ball)) == j) {
-                    dy = -dy;
-                    array[i][j] = 0;
-                }
-            }
-        }
-    }
-}
-
-//        show_screen();
 
 /*
   _________            .__  __             ___ ___         .__
@@ -226,7 +138,7 @@ void wall_bounce_handler(int ball_r, int ball_y, int ball_b, int ball_x) {
 
 
 /*
-   ________                                  .__      ___ ___         .__
+  ________                                  .__      ___ ___         .__
  /  _____/  ____   ____   ________________  |  |    /   |   \   ____ |  | ______   ___________  ______
 /   \  ____/ __ \ /    \_/ __ \_  __ \__  \ |  |   /    ~    \_/ __ \|  | \____ \_/ __ \_  __ \/  ___/
 \    \_\  \  ___/|   |  \  ___/|  | \// __ \|  |__ \    Y    /\  ___/|  |_|  |_> >  ___/|  | \/\___ \
@@ -337,7 +249,7 @@ void handle_left_paddle(int ball_y) {
 
 
 /*
- ___________.__                   ___ ___         .__
+___________.__                   ___ ___         .__
 \__    ___/|__| _____   ____    /   |   \   ____ |  | ______   ___________
   |    |   |  |/     \_/ __ \  /    ~    \_/ __ \|  | \____ \_/ __ \_  __ \
   |    |   |  |  Y Y  \  ___/  \    Y    /\  ___/|  |_|  |_> >  ___/|  | \/
@@ -347,22 +259,26 @@ void handle_left_paddle(int ball_y) {
 
 void wait_than_play() {
 //
-//    seconds = 0;
-    while (seconds < 3) {
-        seconds = (int) (get_current_time() - start_time);
+    seconds = 3;
+    timer_id point_3_delay = create_timer(300);
+    while (seconds > 0) {
+        while (!timer_expired(point_3_delay)){ }
+        seconds -= 1;
         draw_formatted(adjusted_screen_width / 2 - 13, adjusted_screen_height / 2 - 3,
                        "+-------------------------+");
         draw_formatted(adjusted_screen_width / 2 - 13, adjusted_screen_height / 2 - 2,
                        "|                         |");
         draw_formatted(adjusted_screen_width / 2 - 13, adjusted_screen_height / 2 - 1,
                        "|            %d            |",
-                       seconds);
+                        seconds);
         draw_formatted(adjusted_screen_width / 2 - 13, adjusted_screen_height / 2, "|                         |");
         draw_formatted(adjusted_screen_width / 2 - 13, adjusted_screen_height / 2 + 1,
                        "|                         |");
         draw_formatted(adjusted_screen_width / 2 - 13, adjusted_screen_height / 2 + 2,
                        "+-------------------------+");
         show_screen();
+        timer_reset(point_3_delay);
+
     }
 };
 
@@ -389,7 +305,7 @@ void the_time() {
 //    }
 
     if (!paused) {
-        draw_formatted(adjusted_screen_width * 3 / 4, 1, " * Time = %2d:%2d", timer_mins, timer_seconds);
+        draw_formatted(adjusted_screen_width * 3 / 4, 1, " * Time = %2d:%02d", timer_mins, timer_seconds);
     } else if (paused) {
         draw_formatted(adjusted_screen_width * 3 / 4, 1, " * Time = %2d:0%2d", temp_minutes, temp_seconds);
     }
@@ -415,7 +331,12 @@ void top_board() {
 */
 
 void draw_gravity_maker() {
-    if (lives > 0) {
+    int count_up_to_5_seconds = (int) (get_current_time() - time_buffered);
+
+
+    if ((count_up_to_5_seconds >= 5) && (lives > 0)) {
+        setup_for_acceleration();
+        accelerate_ball_around_gravity_maker();
         draw_formatted(adjusted_screen_width / 2, adjusted_screen_height / 2 - 2, " \\ | /");
         draw_formatted(adjusted_screen_width / 2, adjusted_screen_height / 2 - 1, "  \\|/ ");
         draw_formatted(adjusted_screen_width / 2 - 1, adjusted_screen_height / 2, "- -   - -");
@@ -436,12 +357,12 @@ void setup_for_acceleration(void) {
 
     double dist = sqrt((dx * dx) + (dy * dy));
 
-    dx = dx / dist;
-    dy = dy / dist;
+    dx = dx / dist * 0.01;
+    dy = dy / dist * 0.01;
 
     sprite_turn_to(ball, dx, dy);
 
-    sprite_turn(ball, -90);
+    sprite_turn(ball, -45.0);
 }
 
 void accelerate_ball_around_gravity_maker() {
@@ -464,7 +385,7 @@ void accelerate_ball_around_gravity_maker() {
     double dx = sprite_dx(ball);
     double dy = sprite_dy(ball);
 
-    double a = 1 / dist_squared;
+    double a = 100 / dist_squared;
 
     dx += (a * x_diff / dist);
     dy += (a * y_diff / dist);
@@ -493,7 +414,43 @@ void accelerate_ball_around_gravity_maker() {
  */
 
 
+void rails_handler(int array[adjusted_screen_width][adjusted_screen_height]) {
 
+
+    int rail_width_left = (int) round(adjusted_screen_width * 0.25);
+    int rail_width_right = (int) round(adjusted_screen_width * 0.75);
+    int rail_height_top = (int) round(adjusted_screen_height * 0.333333);
+    int rail_height_bottom = (int) round(adjusted_screen_height * 0.66666);
+
+    if (trig_bool) {
+        for (int i = 0; i < adjusted_screen_width; ++i) {
+            for (int j = 0; j < adjusted_screen_height; ++j) {
+                if ((i > rail_width_left && (i < rail_width_right)) &&
+                    ((j == rail_height_bottom) || (j == rail_height_top))) {
+                    draw_formatted(i, j, "=");
+                    array[i][j] = 1;
+                }
+            }
+        }
+    }
+    trig_bool = false;
+
+    for (int i = 0; i < adjusted_screen_width; ++i) {
+        for (int j = 0; j < adjusted_screen_height; ++j) {
+            if ((i > rail_width_left && (i < rail_width_right)) &&
+                ((j == rail_height_bottom) || (j == rail_height_top)) && (array[i][j] == 1)) {
+
+                draw_formatted(i, j, "=");
+                array[i][j] = 1;
+                if (round(sprite_x(ball)) == i &&
+                    round(sprite_y(ball)) == j) {
+                    dy = -dy;
+                    array[i][j] = 0;
+                }
+            }
+        }
+    }
+}
 
 
 // Setup game.
@@ -549,11 +506,14 @@ void process(void) {
 
     dx = sprite_dx(ball);
     dy = sprite_dy(ball);
-    int adjusted_screen_width = screen_width() - 1;
-    int adjusted_screen_height = screen_height() - 1;
     key = get_char();
 //    int right_paddle_y = (int) round(sprite_y(right_paddle));
     int screen_array[adjusted_screen_width][adjusted_screen_height];
+
+    int ball_y = (int) round(sprite_y(ball));
+    int ball_b = ball_y + sprite_height(ball) - 1;
+    int ball_x = (int) round(sprite_x(ball));
+    int ball_r = ball_x + sprite_width(ball) - 1;
 
 
     now = (unsigned int) get_current_time();
@@ -568,11 +528,8 @@ void process(void) {
         level = 1;
     }
 
-    sprite_step(ball);
-    int ball_y = (int) round(sprite_y(ball));
-    int ball_b = ball_y + sprite_height(ball) - 1;
-    int ball_x = (int) round(sprite_x(ball));
-    int ball_r = ball_x + sprite_width(ball) - 1;
+
+
 
 
 //    int right_paddle_left = (int) round(sprite_x(right_paddle));
@@ -616,13 +573,8 @@ void process(void) {
              */
         case 3 :
             handle_left_paddle(ball_y);
-            int count_up_to_5_seconds = (int) (get_current_time() - time_buffered);
+            draw_gravity_maker();
 
-            if ((count_up_to_5_seconds >= 5) && !game_over) {
-                draw_gravity_maker();
-            }
-            setup_for_acceleration();
-            accelerate_ball_around_gravity_maker();
 
             break;
 
@@ -637,44 +589,16 @@ void process(void) {
         case 4 :
             handle_left_paddle(ball_y);
             rails_handler(screen_array);
-//            if (trig_bool) {
-//                for (int i = 0; i < adjusted_screen_width; ++i) {
-//                    for (int j = 0; j < adjusted_screen_height; ++j) {
-//                        if ((i > rail_width_left && (i < rail_width_right)) &&
-//                            ((j == rail_height_bottom) || (j == rail_height_top))) {
-//                            draw_formatted(i, j, "=");
-//                            screen_array[i][j] = 1;
-//                        }
-//                    }
-//                }
-//            }
-//            trig_bool = false;
-//
-//            for (int i = 0; i < adjusted_screen_width; ++i) {
-//                for (int j = 0; j < adjusted_screen_height; ++j) {
-//                    if ((i > rail_width_left && (i < rail_width_right)) &&
-//                        ((j == rail_height_bottom) || (j == rail_height_top)) && (screen_array[i][j] == 1)) {
-//
-//                        draw_formatted(i, j, "=");
-//                        screen_array[i][j] = 1;
-//                        if (round(sprite_x(ball)) == i &&
-//                            round(sprite_y(ball)) == j) {
-//                            dy = -dy;
-//                            screen_array[i][j] = 0;
-//                        }
-//                    }
-//                }
-//            }
+
             break;
         default :
-            draw_formatted(0, 1, "%d is not a valid level", level);
+            draw_formatted(adjusted_screen_width / 2, adjusted_screen_height / 2, "%d is not a valid level", level);
     }
 
 
     handle_right_paddle(adjusted_screen_height, key, right_paddle_top);
-
     wall_bounce_handler(ball_r, ball_y, ball_b, ball_x);
-
+    sprite_step(ball);
     show_screen();
     clear_screen();
     draw_border(0, 0, adjusted_screen_width, adjusted_screen_height);
@@ -686,12 +610,11 @@ void process(void) {
 
 void handle_game() {
     show_screen();
+    wait_than_play();
     while (!game_over) {
-//        if (draw_everything) {
-        wait_than_play();
+
         process();
         top_board();
-//        }
         timer_pause(delay);
         // Do a check to see which game mode
         // if ( update_screen ) {

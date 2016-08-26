@@ -5,11 +5,6 @@
 #include "library/cab202_timers.h"
 #include "library/cab202_sprites.h"
 
-#ifndef PONGINCLION_NAUGHTY_GLOBALS_H
-#define PONGINCLION_NAUGHTY_GLOBALS_H
-
-#endif //PONGINCLION_NAUGHTY_GLOBALS_H
-
 
  sprite_id
         right_paddle,

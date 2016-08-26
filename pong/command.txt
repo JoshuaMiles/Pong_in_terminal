@@ -1,0 +1,1 @@
+gcc -o main main.c -I ~/uni/cab202/pong/library -L ~/uni/cab202/pong/ -lzdk -lncurses -lm
