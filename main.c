@@ -1,6 +1,11 @@
 #include "main.h"
 
 
+
+
+
+//        show_screen();
+
 /*
   _________            .__  __             ___ ___         .__
  /   _____/____________|__|/  |_  ____    /   |   \   ____ |  | ______   ___________  ______
@@ -259,26 +264,22 @@ ___________.__                   ___ ___         .__
 
 void wait_than_play() {
 //
-    seconds = 3;
-    timer_id point_3_delay = create_timer(300);
-    while (seconds > 0) {
-        while (!timer_expired(point_3_delay)){ }
-        seconds -= 1;
+//    seconds = 0;
+    while (seconds < 3) {
+        seconds = (int) (get_current_time() - start_time);
         draw_formatted(adjusted_screen_width / 2 - 13, adjusted_screen_height / 2 - 3,
                        "+-------------------------+");
         draw_formatted(adjusted_screen_width / 2 - 13, adjusted_screen_height / 2 - 2,
                        "|                         |");
         draw_formatted(adjusted_screen_width / 2 - 13, adjusted_screen_height / 2 - 1,
                        "|            %d            |",
-                        seconds);
+                        3 - seconds);
         draw_formatted(adjusted_screen_width / 2 - 13, adjusted_screen_height / 2, "|                         |");
         draw_formatted(adjusted_screen_width / 2 - 13, adjusted_screen_height / 2 + 1,
                        "|                         |");
         draw_formatted(adjusted_screen_width / 2 - 13, adjusted_screen_height / 2 + 2,
                        "+-------------------------+");
         show_screen();
-        timer_reset(point_3_delay);
-
     }
 };
 
@@ -610,11 +611,12 @@ void process(void) {
 
 void handle_game() {
     show_screen();
-    wait_than_play();
     while (!game_over) {
-
+//        if (draw_everything) {
+        wait_than_play();
         process();
         top_board();
+//        }
         timer_pause(delay);
         // Do a check to see which game mode
         // if ( update_screen ) {
