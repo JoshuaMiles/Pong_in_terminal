@@ -529,10 +529,6 @@ void process(void) {
         level = 1;
     }
 
-
-
-
-
 //    int right_paddle_left = (int) round(sprite_x(right_paddle));
     int right_paddle_top = (int) round(sprite_y(right_paddle));
 //    int  right_paddle_right = right_paddle_left + paddle_width - 1;
@@ -575,18 +571,11 @@ void process(void) {
         case 3 :
             handle_left_paddle(ball_y);
             draw_gravity_maker();
-
-
             break;
 
             /*
-             __________        .__.__
-            \______   \_____  |__|  |   ______
-             |       _/\__  \ |  |  |  /  ___/
-             |    |   \ / __ \|  |  |__\___ \
-             |____|_  /(____  /__|____/____  >
-                    \/      \/             \/
-             */
+
+            */
         case 4 :
             handle_left_paddle(ball_y);
             rails_handler(screen_array);
@@ -596,7 +585,7 @@ void process(void) {
             draw_formatted(adjusted_screen_width / 2, adjusted_screen_height / 2, "%d is not a valid level", level);
     }
 
-
+    //TODO reset game when going up level
     handle_right_paddle(adjusted_screen_height, key, right_paddle_top);
     wall_bounce_handler(ball_r, ball_y, ball_b, ball_x);
     sprite_step(ball);
