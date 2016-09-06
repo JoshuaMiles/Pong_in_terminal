@@ -50,14 +50,15 @@ char *help_screen_image =
 /**/    "q: quit game"
 /**/    "l: cycle levels"
 /**/    "\n"
-/**/    "Press a key to play...";
+/**/    "";
 
 
 bool
         game_over = false,
         hud_on = false,
         draw_everything = true,
-        trig_bool = true;
+        trig_bool = true,
+        waiting = false;
 int     paddle_width = 1,
         paddle_height = 7,
 
@@ -67,7 +68,7 @@ int     paddle_width = 1,
         delay = 15,
         lives = 1,
         score = 0,
-        level = 4,
+        level = 3,
 
         timer_mins = 0,
         timer_seconds = 0,

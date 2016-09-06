@@ -15,7 +15,7 @@ bool sprite_collision(sprite_id sprite_1, sprite_id sprite_2);
 
 void set_ball_speed(float mid_width, float mid_height, double speed_modifier);
 
-void ball_set(float mid_width, float mid_height, double speed_modifier);
+void ball_set(double speed_modifier);
 
 void wall_bounce_handler(int ball_r, int ball_y, int ball_b, int ball_x);
 
@@ -50,3 +50,5 @@ void process(void);
 void handle_game();
 
 void rails_handler(int array[adjusted_screen_width][adjusted_screen_height]);
+
+void reset_game();
