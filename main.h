@@ -15,7 +15,7 @@ bool sprite_collision(sprite_id sprite_1, sprite_id sprite_2);
 
 void set_ball_speed(float mid_width, float mid_height, double speed_modifier);
 
-void ball_set(double speed_modifier);
+void ball_set();
 
 void wall_bounce_handler(int ball_r, int ball_y, int ball_b, int ball_x);
 
@@ -29,7 +29,7 @@ void reset_game();
 
 void handle_right_paddle(int height, int key, int right_paddle_top);
 
-void handle_left_paddle(int ball_y);
+void handle_left_paddle();
 
 void wait_than_play();
 

@@ -15,6 +15,7 @@
 double  ball_dx,
         ball_dy,
         time_buffered,
+        time_buffered_gravity_maker,
         angle;
 
 char *paddle_image_large =
@@ -65,7 +66,7 @@ int     paddle_width = 1,
         ball_width = 1,
         ball_height = 1,
 
-        delay = 15,
+        delay = 40,
         lives = 1,
         score = 0,
         level = 3,
