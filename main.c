@@ -14,15 +14,13 @@ void create_sprites(int right_paddle_x, int right_paddle_y, int left_paddle_x) {
     right_paddle = sprite_create(right_paddle_x, right_paddle_y, paddle_width, paddle_height, paddle_image_large);
     left_paddle = sprite_create(left_paddle_x, (adjusted_screen_height) / 2 - 3, paddle_width, paddle_height,
                                 paddle_image_large);
-//    gravity_maker = sprite_create(gravity_maker_x - 2, gravity_maker_y - 2, 5, 5, gravity_maker_image);
-
 }
 
 
 bool sprite_collision(sprite_id sprite_1, sprite_id sprite_2) {
 
     int sprite_1_left = (int) round(sprite_x(sprite_1)),
-            sprite_1_right = (int) sprite_1_left + sprite_width(sprite_1),
+            sprite_1_right = sprite_1_left + sprite_width(sprite_1),
             sprite_1_top = (int) round(sprite_y(sprite_1)),
             sprite_1_bottom = sprite_1_top + sprite_height(sprite_1),
 
@@ -37,30 +35,6 @@ bool sprite_collision(sprite_id sprite_1, sprite_id sprite_2) {
             sprite_1_left < sprite_2_right &&
             sprite_1_right > sprite_2_left;
 }
-
-//void pause_handler() {
-//
-//    float seconds = 0;
-//
-//    double start_time = get_current_time();
-//
-//    int time_left = 3000;
-//
-//    int time_left_in_seconds;
-//
-//
-//    // Kinda Works
-//    while (time_left >= 0) {
-//        show_screen();
-//        time_left -= (int) (get_current_time() - start_time);
-//        time_left_in_seconds = time_left / 1000;
-//        draw_formatted(adjusted_screen_width / 2 - 13, adjusted_screen_height / 2 - 1, "            %d             ",
-//                       time_left_in_seconds);
-////        timer_pause(100);
-//        start_time -= 500;
-//    }
-//}
-
 
 /*
 __________        .__  .__      ___ ___         .__
@@ -87,20 +61,20 @@ void ball_set() {
 }
 
 
-void wall_bounce_handler(int ball_r, int ball_y, int ball_b, int ball_x) {
+void wall_bounce_handler(int ball_r, int ball_b) {
 
-    if (dx != sprite_dx(ball) || dy != sprite_dy(ball)  ) {
+    if (dx != sprite_dx(ball) || dy != sprite_dy(ball)) {
         sprite_back(ball);
         sprite_turn_to(ball, dx, dy);
     }
 
     if (sprite_collision(ball, right_paddle)) {
-        if(!(sprite_y(ball)>=sprite_y(right_paddle) && sprite_dx(ball) > 0) ){
+        if (!(sprite_y(ball) >= sprite_y(right_paddle) && sprite_dx(ball) > 0)) {
             dy = -dy;
 
         }
 
-        if(sprite_y(ball)>=((sprite_y(right_paddle)+paddle_height-1))  ){
+        if (sprite_y(ball) >= ((sprite_y(right_paddle) + paddle_height - 1))) {
             dy = -dy;
             game_over = true;
         }
@@ -124,7 +98,7 @@ void wall_bounce_handler(int ball_r, int ball_y, int ball_b, int ball_x) {
 
 
     // Left and right wall collision
-    if (ball_x < 1) {
+    if ((int) round(sprite_x(ball)) < 1) {
         dx = -dx;
     }
 
@@ -160,15 +134,10 @@ void draw_border(int left, int top, int right, int bottom) {
 
 void hud_functionality(int key, int width, int height) {
 
-    if (key == 'H') {
-        paused = 1;
-    }
     if (key == 'D') {
         hud_on = !hud_on;
     }
-    if(key == 'Q'){
-        wait_char();
-    }
+
     if (key == 'R') {
         reset_game();
         ball_set();
@@ -176,8 +145,6 @@ void hud_functionality(int key, int width, int height) {
 
     //  Display a HUD
     if (hud_on) {
-        // draw_formatted(0,0,"    Right Paddle   : (%2d, %2d)  ", , Top);
-        // draw_formatted(0,1,"    Player Paddle Bottom : (%3d, %3d) ", Right, Bottom);
         draw_formatted(0, 2, "    Ball Coordinates : (%2f, %2f) ", sprite_x(ball), sprite_y(ball));
         draw_formatted(0, 2, "    Right Paddle Y: %2f, Ball Y:  %2f ", sprite_y(right_paddle), sprite_y(ball));
         draw_line(0, height / 2, width, height / 2, '-');
@@ -195,8 +162,8 @@ void help_screen_maker() {
     draw_formatted(screen_width() / 2 - 13, screen_height() / 2 + 2, "w: Move Up");
     draw_formatted(screen_width() / 2 - 13, screen_height() / 2 + 3, "s: Move Down");
     draw_formatted(screen_width() / 2 - 13, screen_height() / 2 + 4, "h: show this help screen");
-    draw_formatted(screen_width() / 2 - 13, screen_height() / 2 + 5, "q: quit game");
-    draw_formatted(screen_width() / 2 - 13, screen_height() / 2 + 6, "l: cycle levels");
+    draw_formatted(screen_width() / 2 - 13, screen_height() / 2 + 5, "Q: quit game");
+    draw_formatted(screen_width() / 2 - 13, screen_height() / 2 + 6, "L: cycle levels");
     draw_formatted(screen_width() / 2 - 13, screen_height() / 2 + 8, "Press a key to play...");
     show_screen();
 }
@@ -214,7 +181,6 @@ void help_screen_maker() {
 
 void game_over_screen() {
     clear_screen();
-    draw_everything = false;
     draw_formatted(screen_width() / 2 - 13, screen_height() / 2 - 3, "+-------------------------+ ");
     draw_formatted(screen_width() / 2 - 13, screen_height() / 2 - 2, "|                         |");
     draw_formatted(screen_width() / 2 - 13, screen_height() / 2 - 1, "|        Game Over        |");
@@ -265,11 +231,11 @@ void handle_left_paddle() {
     }
 
     if (sprite_collision(left_paddle, ball)) {
-        if(sprite_y(ball)<sprite_y(left_paddle) && sprite_dx(ball) > 0 ){
+        if (sprite_y(ball) < sprite_y(left_paddle) && sprite_dx(ball) > 0) {
             dy = -dy;
         }
 
-        if(sprite_y(ball)>=((sprite_y(left_paddle)+paddle_width))){
+        if (sprite_y(ball) >= ((sprite_y(left_paddle) + paddle_width))) {
             dy = -dy;
         }
         dx = -dx;
@@ -289,8 +255,7 @@ ___________.__                   ___ ___         .__
  */
 
 void wait_than_play() {
-    start_time = (int) get_current_time();
-    timer_id main_timer = create_timer(300);
+    timer_id main_timer = create_timer(900);
     seconds = 3;
 
     while (!timer_expired(main_timer)) {
@@ -307,10 +272,9 @@ void wait_than_play() {
                        "|                         |");
         draw_formatted(adjusted_screen_width / 2 - 13, adjusted_screen_height / 2 + 2,
                        "+-------------------------+");
-        timer_pause(100);
+        timer_pause(300);
         show_screen();
     }
-    waiting = false;
     seconds = 0;
 };
 
@@ -320,16 +284,15 @@ void the_time() {
     timer_seconds = (int) (get_current_time() - time_buffered);
     int timer_seconds_storage = 0;
     int temp = 0;
-    if (key == 'P') {
+    if (key == 'h') {
         timer_seconds_storage = (int) get_current_time();
-        while (key != 'H') {
-            temp = (int) (get_current_time() - timer_seconds_storage);
-
-            draw_formatted(adjusted_screen_width * 3 / 4, 1, " * Time = %2d:%02d", timer_mins, timer_seconds);
-            help_screen_maker();
-            show_screen();
-            key = get_char();
-        }
+        key = 0;
+        draw_formatted(adjusted_screen_width * 3 / 4, 1, " * Time = %2d:%02d", timer_mins, timer_seconds);
+        help_screen_maker();
+        show_screen();
+        key = get_char();
+        wait_char();
+        temp = (int) (get_current_time() - timer_seconds_storage);
         time_buffered += temp;
     }
 
@@ -373,7 +336,7 @@ void draw_gravity_maker() {
             accelerate_ball_around_gravity_maker();
         }
         draw_formatted((adjusted_screen_width / 2) - 3, adjusted_screen_height / 2 - 2, " \\ | /");
-        draw_formatted((adjusted_screen_width / 2) - 3 , adjusted_screen_height / 2 - 1, "  \\|/ ");
+        draw_formatted((adjusted_screen_width / 2) - 3, adjusted_screen_height / 2 - 1, "  \\|/ ");
         draw_formatted((adjusted_screen_width / 2) - 4, adjusted_screen_height / 2, "- -  - -");
         draw_formatted((adjusted_screen_width / 2) - 3, adjusted_screen_height / 2 + 1, " / | \\");
         draw_formatted((adjusted_screen_width / 2) - 3, adjusted_screen_height / 2 + 2, "/  |  \\");
@@ -396,7 +359,6 @@ void setup_for_acceleration(void) {
     dy *= 10;
 
     sprite_turn_to(ball, dx, dy);
-    // TODO ball getting caught at one point and not even starting when level started from L
     sprite_turn(ball, 90.0);
 }
 
@@ -453,6 +415,7 @@ void rails_handler(int array[adjusted_screen_width][adjusted_screen_height]) {
     int rail_height_top = (int) round(adjusted_screen_height * 0.333333);
     int rail_height_bottom = (int) round(adjusted_screen_height * 0.66666);
 
+    // Ensuring the array is not redrawn every time the loop is run
     if (trig_bool) {
         for (int i = 0; i < adjusted_screen_width; ++i) {
             for (int j = 0; j < adjusted_screen_height; ++j) {
@@ -487,23 +450,17 @@ void rails_handler(int array[adjusted_screen_width][adjusted_screen_height]) {
 
 // Setup game.
 void setup(void) {
-
-
     adjusted_screen_width = screen_width() - 1;
     adjusted_screen_height = screen_height() - 1;
-
-
     int
             left_paddle_x = 3,
             right_paddle_x = adjusted_screen_width - 3,
             right_paddle_y = (adjusted_screen_height - 1) / 2 - 3,
-
             ball_x = adjusted_screen_width / 2,
             ball_y = adjusted_screen_height / 2;
 
     time_buffered = get_current_time();
     time_buffered_gravity_maker = get_current_time();
-
     wait_5_seconds = create_timer(5000);
 
     if (adjusted_screen_height < 21) {
@@ -513,7 +470,7 @@ void setup(void) {
 
     // Screen Setup
     draw_border(0, 0, adjusted_screen_width, adjusted_screen_height);
-    // Handling the inital speed of the ball
+    // Handling the initial speed of the ball
     ball_dx = adjusted_screen_width - adjusted_screen_width / 2;
     ball_dy = adjusted_screen_height - adjusted_screen_height / 2;
     double dist = sqrt(ball_dx * ball_dx + ball_dy * ball_dy);
@@ -521,30 +478,23 @@ void setup(void) {
     ball_dy = (ball_dy / dist);
     ball = sprite_create(ball_x, ball_y, ball_width, ball_height, ball_image);
     ball_set();
-
-
     // Set up the paddle at the centre of the screen.
-
     create_sprites(right_paddle_x, right_paddle_y, left_paddle_x);
     sprite_draw(right_paddle);
     sprite_draw(ball);
 }
 
 void process(void) {
-
     key = get_char();
     dx = sprite_dx(ball);
     dy = sprite_dy(ball);
-
-//    int right_paddle_y = (int) round(sprite_y(right_paddle));
     int screen_array[adjusted_screen_width][adjusted_screen_height];
-    int ball_y = (int) round(sprite_y(ball));
-    int ball_b = ball_y + sprite_height(ball);
-    int ball_x = (int) round(sprite_x(ball));
-    int ball_r = ball_x + sprite_width(ball);
+    int ball_b = (int) round(sprite_y(ball)) + sprite_height(ball);
+    int ball_r = (int) round(sprite_x(ball)) + sprite_width(ball);
 
-
-//   angle = rand() % 360 ;
+    if(key == 'Q') {
+        game_over = true;
+    }
 
     if (key == 'L' && level <= 4) {
 
@@ -553,14 +503,11 @@ void process(void) {
         reset_game();
         timer_mins = 0;
     } else if (level > 4) {
+
         level = 1;
     }
 
-//    int right_paddle_left = (int) round(sprite_x(right_paddle));
     int right_paddle_top = (int) round(sprite_y(right_paddle));
-//    int  right_paddle_right = right_paddle_left + paddle_width - 1;
-//    int  right_paddle_bottom = right_paddle_top + paddle_height - 1;
-
 
     switch (level) {
         /*
@@ -609,9 +556,8 @@ void process(void) {
             draw_formatted(adjusted_screen_width / 2, adjusted_screen_height / 2, "%d is not a valid level", level);
     }
 
-    //TODO reset game when going up level
     handle_right_paddle(adjusted_screen_height, key, right_paddle_top);
-    wall_bounce_handler(ball_r, ball_y, ball_b, ball_x);
+    wall_bounce_handler(ball_r, ball_b);
     sprite_step(ball);
     show_screen();
     clear_screen();
@@ -625,9 +571,9 @@ void handle_game() {
     show_screen();
     int first_time_in = 1;
     while (!game_over) {
+        now = (unsigned int) get_current_time();
+        srand(now);
         if (first_time_in) {
-            now = (unsigned int) get_current_time();
-            srand(now);
             help_screen_maker();
             wait_char();
             clear_screen();
@@ -635,7 +581,6 @@ void handle_game() {
             first_time_in = 0;
         }
 
-//        if (draw_everything) {
         process();
         timer_pause(delay);
         top_board();
@@ -646,7 +591,6 @@ void handle_game() {
                 game_over = true;
             }
             if (key == 'y') {
-                draw_everything = true;
                 reset_game();
                 help_screen_maker();
                 wait_char();
@@ -657,11 +601,8 @@ void handle_game() {
 
 int main(void) {
     setup_screen();
-
     setup();
     handle_game();
-
     cleanup_screen();
-
     return 0;
 }

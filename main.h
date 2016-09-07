@@ -13,11 +13,9 @@ void create_sprites(int right_paddle_x, int right_paddle_y, int left_paddle_x);
 
 bool sprite_collision(sprite_id sprite_1, sprite_id sprite_2);
 
-void set_ball_speed(float mid_width, float mid_height, double speed_modifier);
-
 void ball_set();
 
-void wall_bounce_handler(int ball_r, int ball_y, int ball_b, int ball_x);
+void wall_bounce_handler(int ball_r, int ball_b);
 
 void draw_border(int left, int top, int right, int bottom);
 

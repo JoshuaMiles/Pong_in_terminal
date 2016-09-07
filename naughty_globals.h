@@ -57,9 +57,8 @@ char *help_screen_image =
 bool
         game_over = false,
         hud_on = false,
-        draw_everything = true,
-        trig_bool = true,
-        waiting = false;
+        trig_bool = true;
+
 int     paddle_width = 1,
         paddle_height = 7,
 
@@ -73,16 +72,10 @@ int     paddle_width = 1,
 
         timer_mins = 0,
         timer_seconds = 0,
-        linear_distance = 0,
         adjusted_screen_height,
         adjusted_screen_width,
         key,
-        paused = 0,
-        temp_seconds = 0,
-        temp_minutes = 0,
-        seconds,
-        time_left,
-        start_time;
+        seconds;
 
 unsigned int now;
 double dx, dy;
