@@ -89,18 +89,20 @@ void ball_set() {
 
 void wall_bounce_handler(int ball_r, int ball_y, int ball_b, int ball_x) {
 
-    if (dx != sprite_dx(ball) || dy != sprite_dy(ball)) {
+    if (dx != sprite_dx(ball) || dy != sprite_dy(ball)  ) {
         sprite_back(ball);
         sprite_turn_to(ball, dx, dy);
     }
 
     if (sprite_collision(ball, right_paddle)) {
-        if(!(sprite_y(ball)>=sprite_y(right_paddle)) ){
+        if(!(sprite_y(ball)>=sprite_y(right_paddle) && sprite_dx(ball) > 0) ){
             dy = -dy;
+
         }
 
-        if(sprite_y(ball)>=((sprite_y(right_paddle)+paddle_width))){
+        if(sprite_y(ball)>=((sprite_y(right_paddle)+paddle_height-1))  ){
             dy = -dy;
+            game_over = true;
         }
         sprite_move(ball, dx - 2, dy);
         dx = -dx;
@@ -184,10 +186,6 @@ void hud_functionality(int key, int width, int height) {
 }
 
 
-// While a key is not pressed
-// draw the stuff on the screen and show the screen
-
-
 void help_screen_maker() {
     clear_screen();
     draw_formatted(screen_width() / 2 - 13, screen_height() / 2 - 3, "CAB202 Assignment 1 - Pong");
@@ -231,9 +229,7 @@ void reset_game() {
     score = 0;
     trig_bool = 1;
     time_buffered_gravity_maker = get_current_time();
-//    time_buffered = 0;
     ball_set();
-
 }
 
 
@@ -293,9 +289,7 @@ ___________.__                   ___ ___         .__
  */
 
 void wait_than_play() {
-//    seconds = 0;
     start_time = (int) get_current_time();
-//        waiting = true;
     timer_id main_timer = create_timer(300);
     seconds = 3;
 
@@ -340,9 +334,8 @@ void the_time() {
     }
 
     if (timer_seconds > 59) {
-        // TODO timermins going up every time the L is pushed
         time_buffered = get_current_time();
-//        timer_mins += 1;
+        timer_mins += 1;
     }
 
     draw_formatted(adjusted_screen_width * 3 / 4, 1, " * Time = %2d:%02d", timer_mins, timer_seconds);
