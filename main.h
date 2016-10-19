@@ -1,13 +1,12 @@
 #pragma once
-#include <math.h>
+#include<math.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include "library/cab202_sprites.h"
 #include "library/cab202_timers.h"
 #include "library/cab202_graphics.h"
 #include "naughty_globals.h"
-
-
 
 void create_sprites(int right_paddle_x, int right_paddle_y, int left_paddle_x);
 
@@ -25,7 +24,7 @@ void game_over_screen();
 
 void reset_game();
 
-void handle_right_paddle(int height, int key, int right_paddle_top);
+void handle_right_paddle( int key, int right_paddle_top);
 
 void handle_left_paddle();
 
@@ -34,6 +33,8 @@ void wait_than_play();
 void the_time();
 
 void top_board();
+
+void do_when_in_first_time();
 
 void draw_gravity_maker();
 
@@ -50,3 +51,5 @@ void handle_game();
 void rails_handler(int array[adjusted_screen_width][adjusted_screen_height]);
 
 void reset_game();
+
+void help_screen_maker();

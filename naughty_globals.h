@@ -9,8 +9,7 @@
  sprite_id
         right_paddle,
         ball,
-        left_paddle,
-        help_screen;
+        left_paddle;
 
 double  ball_dx,
         ball_dy,
@@ -65,10 +64,12 @@ int     paddle_width = 1,
         ball_width = 1,
         ball_height = 1,
 
-        delay = 40,
+        delay = 50,
         lives = 1,
         score = 0,
-        level = 3,
+        level = 1,
+
+        first_time_in = 1,
 
         timer_mins = 0,
         timer_seconds = 0,

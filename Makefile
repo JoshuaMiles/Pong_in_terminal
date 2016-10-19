@@ -1,6 +1,6 @@
 CC = gcc
-INCLUDE = -I ~/uni/cab202/pongInClion 
-LIBS = -L ~/uni/cab202/pongInClion/library
+INCLUDE = -I ./library
+LIBS = -L ./library
 FLAGS = -lzdk -lncurses -lm
 OBJ = main.o
 
